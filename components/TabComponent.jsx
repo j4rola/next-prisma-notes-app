@@ -82,7 +82,7 @@ function TabComponent({tab}) {
     const newArray = tabs.filter(x => x.id !== id)  
     console.log( `newArray is ${newArray}`) 
     updateTabs(newArray) 
-    updateCurrentTab(null)
+    updateCurrentTab(null) 
     const deleted = await axios.post('api/delete-tab', {id: parseInt(id)}) 
 
   }
@@ -103,7 +103,7 @@ function TabComponent({tab}) {
           <Nav variant="pills" className="flex-column m-4">  
           {tabs.map(x =>  
             <div>  
-              <ButtonGroup className='w-50'>  
+              <ButtonGroup className='w-50 my-1'>  
                 <Button variant='light' style={{width: '200px'}} onClick={(e) => getData(e)} prop={[x.notes]} id={x.id}>{x.title}</Button> 
                 <Button variant='primary'>edit</Button> 
                 <Button id={x.id} onClick={() => handleDeleteTab(x.id)} variant='danger'>x</Button> 
@@ -112,7 +112,7 @@ function TabComponent({tab}) {
 
             <div className='my-2'>  
             <Form.Control style={{width: '100px'}} onChange={(e) => handleChange(e)} type="text"  placeholder="New Tab Name" value={tabName} /> 
-            <Button onClick={(e) => handleSubmit(e)} variant='success' className='btn rounded'>Add Tab</Button>  
+            <Button onClick={(e) => handleSubmit(e)} variant='success' className='btn rounded mt-2'>Add Tab</Button>  
             </div>
             
           </Nav>
