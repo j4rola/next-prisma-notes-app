@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import MyPopover from './MyPopover';    
 import Form from 'react-bootstrap/Form'; 
 import Card from 'react-bootstrap/Card'; 
 import { useState } from 'react';
@@ -16,7 +17,7 @@ const axios = require('axios');
 
 function TabComponent({tab}) {
   
-   
+  const [test, setTest] = useState(0)
   const [tabs, updateTabs] = useState(tab)
   const [notes, updateNotes] = useState([])
   const [loading, updateLoading] = useState(false)
@@ -39,11 +40,14 @@ function TabComponent({tab}) {
   }
 
   const handleSubmit = async (e) =>  {
+
     e.preventDefault()
     const response = await axios.post('/api/create-tab', {name: tabName})
     console.log(response.data)
     updateTabs([...tabs, response.data.notes])
     updateTabName('')
+    updateCurrentTab(response.data.notes.id)
+
   } 
 
   const handleSubmitNote = async (e) =>  {
@@ -95,44 +99,53 @@ function TabComponent({tab}) {
     console.log(notes)
   }
 
+  const editTabName = async (e) => {
+    e.preventDefault()
+
+    //const response = await axios.post('/api/edit-tab-name', { body: e.target})
+
+  }
+
   console.log(tab)
   return (
-    <><Tab.Container id="left-tabs-example" defaultActiveKey="first">   
-      <Row className='d-flex flex-row'>
-        <Col sm={3}>
-          <Nav variant="pills" className="flex-column m-4">  
-          {tabs.map(x =>  
-            <div>  
-              <ButtonGroup className='w-50 my-1'>  
-                <Button variant='light' style={{width: '200px'}} onClick={(e) => getData(e)} prop={[x.notes]} id={x.id}>{x.title}</Button> 
-                <Button variant='primary'>edit</Button> 
-                <Button id={x.id} onClick={() => handleDeleteTab(x.id)} variant='danger'>x</Button> 
-              </ButtonGroup>   
-            </div>)}  
+    <><div className='d-flex flex-column justify-content-center p-5'>   
+      <Row >
+        <Col  sm={5}>
+          <div className='d-flex flex-column align-items-center'>  
+            <div>
+            { tabs.map(x =>  
+              
+              <div>   
+                <ButtonGroup  className='my-1'>  
+                  <Button variant='light' style={{width: '160px'}} onClick={(e) => getData(e)} prop={[x.notes]} id={x.id}>{x.title}{test}</Button> 
+                  <MyPopover test={test} setTest={setTest} tabs={tabs} updateTabs={updateTabs} variant='primary' id={x.id} onClick={(e) => editTabName(e)}>edit</MyPopover> 
+                  <Button id={x.id} onClick={() => handleDeleteTab(x.id)} variant='danger'>x</Button> 
+                </ButtonGroup>   
+              </div>)}  
 
-            <div className='my-2'>  
-            <Form.Control style={{width: '100px'}} onChange={(e) => handleChange(e)} type="text"  placeholder="New Tab Name" value={tabName} /> 
-            <Button onClick={(e) => handleSubmit(e)} variant='success' className='btn rounded mt-2'>Add Tab</Button>  
-            </div>
-            
-          </Nav>
+              <div className='my-2'>  
+                <Form.Control style={{width: '100px'}} onChange={(e) => handleChange(e)} type="text"  placeholder="New Tab Name" value={tabName} /> 
+                <Button onClick={(e) => handleSubmit(e)} variant='success' className='btn rounded mt-2'>Add Tab</Button>  
+              </div>
+              </div>
+          </div>
+          
         </Col>
-        <Col sm={9}>
-          <Tab.Content className='p-4'> 
+        <Col sm={7}>
+          <div className=' mr-5 d-flex flex-column justify-content-start'> 
             <Card>
               { currentTab ? <Card.Body>
                 <h1>{currentTabName}</h1>
-                {  notes.map(x => <p>{x.body} <span style={{color: 'red', cursor: 'pointer', fontWeight: 'bold'}} id={x.id} onClick={() => handleDeleteNote(x.id)}>x</span></p>) } 
+                { notes[0] ? notes.map(x => <p>{x.body}<span style={{color: 'red', cursor: 'pointer', fontWeight: 'bold'}} id={x.id} onClick={() => handleDeleteNote(x.id)}> x</span></p>): <p>No notes yet.</p> } 
 
                 <Form.Control style={{width: '100px'}} onChange={(e) => handleNoteChange(e)} type="text"  placeholder="New Note" value={noteBody} />
                 <Button onClick={(e) => handleSubmitNote(e)} variant='success' className='btn rounded my-2'>Add Note</Button>
               </Card.Body> : <div className='m-5'><h2>Welcome to Notes App</h2><p className='my-3'>Click a tab to see related notes, or create a new tab to create notes of your own.</p></div> } 
             </Card>
-          </Tab.Content> 
+          </div> 
         </Col> 
       </Row> 
-    </Tab.Container>  
-
+    </div>  
     </>  
   );
 }
