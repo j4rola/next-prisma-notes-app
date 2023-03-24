@@ -8,6 +8,7 @@ import MyPopover from './MyPopover';
 import Form from 'react-bootstrap/Form'; 
 import Card from 'react-bootstrap/Card'; 
 import { useState } from 'react';
+import { CiEdit } from 'react-icons';
 const axios = require('axios');
 
 
@@ -17,7 +18,7 @@ const axios = require('axios');
 
 function TabComponent({tab}) {
   
-  const [test, setTest] = useState(0)
+  
   const [tabs, updateTabs] = useState(tab)
   const [notes, updateNotes] = useState([])
   const [loading, updateLoading] = useState(false)
@@ -77,11 +78,6 @@ function TabComponent({tab}) {
   }
 
   const handleDeleteTab = async (id) => {
-    // const newArray = myState.filter(x => x.id !== id)  
-    // setMyState(newArray) 
-
-    // console.log(myState) 
-
     
     const newArray = tabs.filter(x => x.id !== id)  
     console.log( `newArray is ${newArray}`) 
@@ -99,12 +95,7 @@ function TabComponent({tab}) {
     console.log(notes)
   }
 
-  const editTabName = async (e) => {
-    e.preventDefault()
-
-    //const response = await axios.post('/api/edit-tab-name', { body: e.target})
-
-  }
+  
 
   console.log(tab)
   return (
@@ -117,8 +108,8 @@ function TabComponent({tab}) {
               
               <div>   
                 <ButtonGroup  className='my-1'>  
-                  <Button variant='light' style={{width: '160px'}} onClick={(e) => getData(e)} prop={[x.notes]} id={x.id}>{x.title}{test}</Button> 
-                  <MyPopover test={test} setTest={setTest} tabs={tabs} updateTabs={updateTabs} variant='primary' id={x.id} onClick={(e) => editTabName(e)}>edit</MyPopover> 
+                  <Button variant='light' style={{width: '160px'}} onClick={(e) => getData(e)} prop={[x.notes]} id={x.id}>{x.title}</Button> 
+                  <MyPopover tabs={tabs} updateTabs={updateTabs} variant='primary' id={x.id}>edit</MyPopover> 
                   <Button id={x.id} onClick={() => handleDeleteTab(x.id)} variant='danger'>x</Button> 
                 </ButtonGroup>   
               </div>)}  
