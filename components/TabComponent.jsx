@@ -1,14 +1,11 @@
 import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import MyPopover from './MyPopover';    
 import Form from 'react-bootstrap/Form'; 
 import Card from 'react-bootstrap/Card'; 
 import { useState } from 'react';
-import { CiEdit } from 'react-icons';
 const axios = require('axios');
 
 
@@ -21,8 +18,6 @@ function TabComponent({tab}) {
   
   const [tabs, updateTabs] = useState(tab)
   const [notes, updateNotes] = useState([])
-  const [loading, updateLoading] = useState(false)
-
   const [tabName, updateTabName] = useState('')
   const [noteBody, updateNoteBody] = useState('')
   const [currentTab, updateCurrentTab] = useState(null)  
@@ -67,14 +62,14 @@ function TabComponent({tab}) {
   } 
 
   const getData = async (e) => {
+
     updateCurrentTab(e.target.id)
     updateCurrentTabName(e.target.innerText) 
-    updateLoading(true)
     console.log(e.target.id)
     const data = await axios.post('/api/get-tabs', {id: parseInt(e.target.id)}) 
     console.log(data.data.notes)
     updateNotes(data.data.notes)
-    updateLoading(false)
+    
   }
 
   const handleDeleteTab = async (id) => {
@@ -93,6 +88,7 @@ function TabComponent({tab}) {
     const response = await axios.post('/api/delete-note', { id: parseInt(id)})
     updateNoteBody('')
     console.log(notes)
+
   }
 
   
@@ -115,7 +111,7 @@ function TabComponent({tab}) {
               </div>)}  
 
               <div className='my-2'>  
-                <Form.Control style={{width: '100px'}} onChange={(e) => handleChange(e)} type="text"  placeholder="New Tab Name" value={tabName} /> 
+                <Form.Control style={{width: '160px'}} onChange={(e) => handleChange(e)} type="text"  placeholder="New Tab Name" value={tabName} /> 
                 <Button onClick={(e) => handleSubmit(e)} variant='success' className='btn rounded mt-2'>Add Tab</Button>  
               </div>
               </div>
@@ -129,7 +125,7 @@ function TabComponent({tab}) {
                 <h1>{currentTabName}</h1>
                 { notes[0] ? notes.map(x => <p>{x.body}<span style={{color: 'red', cursor: 'pointer', fontWeight: 'bold'}} id={x.id} onClick={() => handleDeleteNote(x.id)}> x</span></p>): <p>No notes yet.</p> } 
 
-                <Form.Control style={{width: '100px'}} onChange={(e) => handleNoteChange(e)} type="text"  placeholder="New Note" value={noteBody} />
+                <Form.Control style={{width: '150px'}} onChange={(e) => handleNoteChange(e)} type="text"  placeholder="New Note" value={noteBody} />
                 <Button onClick={(e) => handleSubmitNote(e)} variant='success' className='btn rounded my-2'>Add Note</Button>
               </Card.Body> : <div className='m-5'><h2>Welcome to Notes App</h2><p className='my-3'>Click a tab to see related notes, or create a new tab to create notes of your own.</p></div> } 
             </Card>
