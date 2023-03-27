@@ -101,7 +101,7 @@ function TabComponent({tab}) {
             { tabs.map(x =>  
               
               <div key={x.id}>   
-                <ButtonGroup  className='my-1'>  
+                <ButtonGroup key={x.id}  className='my-1'>  
                   <Button variant='light' style={{width: '160px'}} onClick={(e) => getData(e)} prop={[x.notes]} id={x.id}>{x.title}</Button> 
                   <MyPopover tabs={tabs} updateTabs={updateTabs} variant='primary' id={x.id}>edit</MyPopover> 
                   <Button id={x.id} onClick={() => handleDeleteTab(x.id)} variant='danger'>x</Button> 
