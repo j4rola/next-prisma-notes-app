@@ -110,7 +110,7 @@ function TabComponent({tab}) {
                 </ButtonGroup>   
               </div>)}  
 
-              <div className='my-2'>  
+              <div className='mt-2 mb-5'>  
                 <Form.Control style={{width: '160px'}} onChange={(e) => handleChange(e)} type="text"  placeholder="New Tab Name" value={tabName} /> 
                 <Button onClick={(e) => handleSubmit(e)} variant='success' className='btn rounded mt-2'>Add Tab</Button>  
               </div>
@@ -128,7 +128,7 @@ function TabComponent({tab}) {
                 <Form.Control style={{width: '150px'}} onChange={(e) => handleNoteChange(e)} type="text"  placeholder="New Note" value={noteBody} />
                 <Button onClick={(e) => handleSubmitNote(e)} variant='success' className='btn rounded my-2'>Add Note</Button>
               </Card.Body> : <div className='m-5'><h2>Welcome to Notes App</h2><p className='my-3'>Click a tab to see related notes, or create a new tab to create notes of your own.</p></div> } 
-            </Card>
+            </Card> 
           </div> 
         </Col> 
       </Row> 
