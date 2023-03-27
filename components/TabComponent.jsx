@@ -121,7 +121,7 @@ function TabComponent({tab}) {
             <Card>
               { currentTab ? <Card.Body>
                 <h1>{currentTabName}</h1>
-                { notes[0] ? notes.map(x => <p>{x.body}<span style={{color: 'red', cursor: 'pointer', fontWeight: 'bold'}} id={x.id} onClick={() => handleDeleteNote(x.id)}> x</span></p>): <p>No notes yet.</p> } 
+                { notes[0] ? notes.map(x => <p key={x.id}>{x.body}<span style={{color: 'red', cursor: 'pointer', fontWeight: 'bold'}} id={x.id} onClick={() => handleDeleteNote(x.id)}> x</span></p>): <p>No notes yet.</p> } 
 
                 <Form.Control style={{width: '150px'}} onChange={(e) => handleNoteChange(e)} type="text"  placeholder="New Note" value={noteBody} />
                 <Button onClick={(e) => handleSubmitNote(e)} variant='success' className='btn rounded my-2'>Add Note</Button>
