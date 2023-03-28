@@ -48,7 +48,7 @@ function MyPopover({tabs, updateTabs, id}){
   
   return (
   <>
-    <OverlayTrigger show={vis} trigger="click" placement="right" overlay={popover}>  
+    <OverlayTrigger show={vis} trigger="click" placement="bottom" overlay={popover}>  
       <Button onClick={() => updateVis(!vis)} variant="primary"><CiEdit></CiEdit></Button>  
     </OverlayTrigger>
   </>)
