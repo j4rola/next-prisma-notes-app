@@ -117,7 +117,7 @@ function TabComponent({tab}) {
           
         </Col>
         <Col sm={7}>
-          <div className=' mr-5 d-flex flex-column justify-content-start'> 
+          <div className=' mr-5 d-flex flex-column justify-content-start'>   
             <Card>
               { currentTab ? <Card.Body>
                 <h1>{currentTabName}</h1>
@@ -136,4 +136,5 @@ function TabComponent({tab}) {
 }
 
 
-export default TabComponent; 
+export default TabComponent;   
+
