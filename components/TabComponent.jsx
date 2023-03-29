@@ -125,7 +125,7 @@ function TabComponent({tab}) {
 
                 <Form.Control style={{width: '150px'}} onChange={(e) => handleNoteChange(e)} type="text"  placeholder="New Note" value={noteBody} />
                 <Button onClick={(e) => handleSubmitNote(e)} variant='success' className='btn rounded my-2'>Add Note</Button>
-              </Card.Body> : <div className='m-5'><h2>Welcome to Notes App</h2><p className='my-3'>Click a tab to see related notes, or create a new tab to create notes of your own.</p></div> } 
+              </Card.Body> : <div className='m-5'><h2>Welcome to Tabbed Notes</h2><p className='my-3'>Click a tab to see related notes, or create a new tab to create notes of your own.</p></div> } 
             </Card> 
           </div> 
         </Col> 

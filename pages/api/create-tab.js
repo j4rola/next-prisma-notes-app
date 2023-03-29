@@ -6,9 +6,9 @@ export default async function handler(req, res) {
   console.log(req.body.id)
   const matching = await prisma.tab.create({
     data: {
-        title: req.body.name,
+      title: req.body.name
     }
   })
   console.log(matching)
-  res.status(200).json({ notes: matching })
+  res.status(200).json({ tab: matching })
 }
