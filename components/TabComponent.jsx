@@ -38,15 +38,16 @@ function TabComponent({tab}) {
   const handleSubmit = async (e) =>  {
 
     e.preventDefault()
-    const response = await axios.post('/api/create-tab', {name: tabName})
+    const response = await axios.post('/api/create-tab', { name: tabName })   
     console.log(response.data)
-    updateTabs([...tabs, response.data.notes])
+    updateTabs([...tabs, response.data.tab])        
     updateTabName('')
-    updateCurrentTab(response.data.notes.id)
+    updateCurrentTab(response.data.tab.id)
+    updateCurrentTabName(response.data.tab.title)   
 
   } 
 
-  const handleSubmitNote = async (e) =>  {
+  const handleSubmitNote = async (e) =>  { 
     e.preventDefault()
 
     const newNote = { id: null, tabId: currentTab, body: noteBody } 
@@ -78,7 +79,7 @@ function TabComponent({tab}) {
     console.log( `newArray is ${newArray}`) 
     updateTabs(newArray) 
     updateCurrentTab(null) 
-    const deleted = await axios.post('api/delete-tab', {id: parseInt(id)}) 
+    const deleted = await axios.post('api/delete-tab', {id: parseInt(id)})  
 
   }
 
@@ -102,7 +103,7 @@ function TabComponent({tab}) {
               
               <div key={x.id}>   
                 <ButtonGroup key={x.id}  className='my-1'>  
-                  <Button variant='light' style={{width: '160px'}} onClick={(e) => getData(e)} prop={[x.notes]} id={x.id}>{x.title}</Button> 
+                  <Button variant='light' style={{width: '160px'}} onClick={(e) => getData(e)}  id={x.id}>{x.title}</Button> 
                   <MyPopover tabs={tabs} updateTabs={updateTabs} variant='primary' id={x.id}>edit</MyPopover> 
                   <Button id={x.id} onClick={() => handleDeleteTab(x.id)} variant='danger'>x</Button> 
                 </ButtonGroup>   
