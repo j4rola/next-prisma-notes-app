@@ -43,7 +43,8 @@ function TabComponent({tab}) {
     updateTabs([...tabs, response.data.tab])        
     updateTabName('')
     updateCurrentTab(response.data.tab.id)
-    updateCurrentTabName(response.data.tab.title)   
+    updateCurrentTabName(response.data.tab.title) 
+    updateNotes([])  
 
   } 
 
@@ -56,9 +57,9 @@ function TabComponent({tab}) {
     const response = await axios.post('/api/create-note', { body: noteBody, tabId: parseInt(currentTab) })
     
     const data = await axios.post('/api/get-tabs', { id: parseInt(currentTab) }) 
-    console.log(data.data.notes)
+    console.log(data.data.notes) 
     
-    updateNotes(data.data.notes)
+    updateNotes(data.data.notes)  
     
   } 
 
