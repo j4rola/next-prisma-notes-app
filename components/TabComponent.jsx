@@ -5,7 +5,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import MyPopover from './MyPopover';    
 import Form from 'react-bootstrap/Form'; 
 import Card from 'react-bootstrap/Card'; 
-import { useState } from 'react'; 
+import { useState, useEffect } from 'react'; 
 const axios = require('axios'); 
 
 
@@ -13,16 +13,18 @@ const axios = require('axios');
 
 
 
-function TabComponent({tab}) {
+function TabComponent({ tab, note }) {
   
-  
+  const [count, updateCount] = useState(0)
   const [tabs, updateTabs] = useState(tab)
-  const [notes, updateNotes] = useState([])
+  const [notes, updateNotes] = useState(note)
+  const [currentNotes, updateCurrentNotes] = useState([])
   const [tabName, updateTabName] = useState('')
   const [noteBody, updateNoteBody] = useState('')
   const [currentTab, updateCurrentTab] = useState(null)  
   const [currentTabName, updateCurrentTabName] = useState('')  
-
+  
+  
   const handleChange = (e) => {
     e.preventDefault()
     updateTabName(e.target.value)
@@ -41,25 +43,35 @@ function TabComponent({tab}) {
     const response = await axios.post('/api/create-tab', { name: tabName })   
     console.log(response.data)
     updateTabs([...tabs, response.data.tab])        
-    updateTabName('')
-    updateCurrentTab(response.data.tab.id)
-    updateCurrentTabName(response.data.tab.title) 
+    updateTabName('')  
+    updateCurrentTab(response.data.tab.id)  
+    updateCurrentTabName(response.data.tab.title)  
     updateNotes([])  
 
   } 
 
   const handleSubmitNote = async (e) =>  { 
-    e.preventDefault()
 
-    const newNote = { id: null, tabId: currentTab, body: noteBody } 
+    e.preventDefault()
+    const dummyId = notes[notes.length - 1].id + 1 
+    
+    const newNote = {id: null, tabId: parseInt(currentTab), body: noteBody } 
     updateNotes([...notes, newNote]) 
+    console.log(notes)
+    console.log(note)
+    updateCurrentNotes([...currentNotes, newNote])
     updateNoteBody('')
     const response = await axios.post('/api/create-note', { body: noteBody, tabId: parseInt(currentTab) })
-    
+    console.log(response.data.notes)   
+     
+    //notes[notes.length - 1].id = response.data.notes.id
     const data = await axios.post('/api/get-tabs', { id: parseInt(currentTab) }) 
     console.log(data.data.notes) 
     
-    updateNotes(data.data.notes)  
+    updateCurrentNotes(data.data.notes)  
+    
+    
+    updateNotes([...notes, response.data.notes])   
     
   } 
 
@@ -67,29 +79,42 @@ function TabComponent({tab}) {
 
     updateCurrentTab(e.target.id)
     updateCurrentTabName(e.target.innerText)   
-    console.log(e.target.id)
-    const data = await axios.post('/api/get-tabs', {id: parseInt(e.target.id)}) 
-    console.log(data.data.notes)
-    updateNotes(data.data.notes)
+    // console.log(e.target.id)
+    // console.log(tab)
+    // const clickedTab = tab.filter(x => x.id === parseInt(e.target.id))
+    // console.log(note.filter(x => x.tabId === parseInt(e.target.id)))
+    // console.log(tabs.filter(x => x.id === parseInt(e.target.id))) 
+    // console.log(clickedTab[0].notes) 
+    //const data = await axios.post('/api/get-all-tabs')
+    //updateTabs(data.data.)
+    // const data = await axios.post('/api/get-tabs', {id: parseInt(e.target.id)}) 
+    // console.log(data.data.notes) 
     
+    //updateNotes(clickedTab[0].notes)
+    updateCurrentNotes(notes.filter(x => x.tabId === parseInt(e.target.id)))
   }
 
-  const handleDeleteTab = async (id) => {
+  const handleDeleteTab = async (id) => {   
     
     const newArray = tabs.filter(x => x.id !== id)  
     console.log( `newArray is ${newArray}`) 
     updateTabs(newArray) 
     updateCurrentTab(null) 
     const deleted = await axios.post('api/delete-tab', {id: parseInt(id)})  
-
+    
   }
 
   const handleDeleteNote = async (id) => {
+
+    updateCurrentNotes(currentNotes.filter(x => x.id !== parseInt(id)))
+    console.log(typeof(id))
+    console.log(id)
+    updateNotes(notes.filter(x => x.id !== parseInt(id)))
     
-    updateNotes(notes.filter(x => x.id !== id))
     const response = await axios.post('/api/delete-note', { id: parseInt(id)})
     updateNoteBody('')
     console.log(notes)
+
 
   }
 
@@ -123,7 +148,7 @@ function TabComponent({tab}) {
             <Card>
               { currentTab ? <Card.Body>
                 <h1>{currentTabName}</h1>
-                { notes[0] ? notes.map(x => <p key={x.id}>{x.body}<span style={{color: 'red', cursor: 'pointer', fontWeight: 'bold'}} id={x.id} onClick={() => handleDeleteNote(x.id)}> x</span></p>): <p>No notes yet.</p> } 
+                { currentNotes[0] ? currentNotes.map(x => <p key={x.id}>{x.body}<span style={{color: 'red', cursor: 'pointer', fontWeight: 'bold'}} id={x.id} onClick={() => handleDeleteNote(x.id)}> x</span></p>): <p>No notes yet.</p> } 
 
                 <Form.Control style={{width: '150px'}} onChange={(e) => handleNoteChange(e)} type="text"  placeholder="New Note" value={noteBody} />
                 <Button onClick={(e) => handleSubmitNote(e)} variant='success' className='btn rounded my-2'>Add Note</Button>

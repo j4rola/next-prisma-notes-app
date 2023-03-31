@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export default async function handler(req, res) {
 
   
-  const matching = await prisma.note.findMany()
+  const matching = await prisma.tab.findMany()
   console.log(matching)
   res.status(200).json({ tabs: matching }) 
 

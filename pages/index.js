@@ -7,9 +7,10 @@ import Header from '../components/Header';
    
 const prisma = new PrismaClient();
 
-export default function Home({tab}) {
+export default function Home({tab, note}) {
 
   console.log(tab)
+  console.log(note)
   return (
     <div >
       <Head>
@@ -18,7 +19,7 @@ export default function Home({tab}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header/>
-      <TabComponent tab={tab}>  
+      <TabComponent tab={tab} note={note}> 
 
       </TabComponent>
       
@@ -34,13 +35,20 @@ export async function getServerSideProps() {
       title: true,
       notes: true,
     },
-  });    
+  }); 
+  const notes = await prisma.note.findMany({
+    select: {
+      id: true,
+      tabId: true,
+      body: true
+    }
+  })   
   //const post = await prisma.post.findMany({where: {authorId: 1}}); 
   return {
     props: {
       
       tab: tab,  
-      
+      note: notes
     }
   }
 }
