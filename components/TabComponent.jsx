@@ -77,9 +77,10 @@ function TabComponent({ tab, note }) {
     updateCurrentTabName(e.target.innerText)   
     updateCurrentNotes(notes.filter(x => x.tabId === parseInt(e.target.id)))
 
-  }
-
+  }  
+  
   const handleDeleteTab = async (id) => {   
+
     console.log(tabs)
     const newArray = tabs.filter(x => x.id !== parseInt(id))   
     updateTabs(newArray) 
